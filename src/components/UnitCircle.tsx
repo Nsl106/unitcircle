@@ -113,7 +113,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
 
               <foreignObject
                 x={innerLabelPos.x - 35}
-                y={innerLabelPos.y - 12}
+                y={innerLabelPos.y - (degreesMode ? 12 : 15)}
                 width="70"
                 height="40"
               >
