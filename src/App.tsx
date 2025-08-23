@@ -10,7 +10,6 @@ function AppContent() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ backgroundColor: colors.background }}>
-      <h1 className="text-3xl font-bold mb-4" style={{ color: colors.text }}>Unit Circle</h1>
       <UnitCircle isDegreesMode={isDegreesMode} />
 
       {/* Angle Mode Toggle */}

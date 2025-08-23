@@ -67,11 +67,6 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
         width="700" 
         height="700" 
         viewBox="0 0 700 700" 
-        className="border"
-        style={{ 
-          borderColor: colors.border, 
-          backgroundColor: colors.background 
-        }}
       >
 
         <circle
