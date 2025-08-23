@@ -1,6 +1,7 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Point {
   angle: number;
@@ -15,6 +16,7 @@ interface UnitCircleProps {
 }
 
 const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) => {
+  const { colors } = useTheme();
   const radius = 250;
   const centerX = 350;
   const centerY = 350;
@@ -60,15 +62,24 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
   };
 
   return (
-    <div className="flex justify-center items-center p-8 bg-white">
-      <svg width="700" height="700" viewBox="0 0 700 700" className="border border-gray-300 bg-white">
+    <div className="flex justify-center items-center p-8" style={{ backgroundColor: colors.background }}>
+      <svg 
+        width="700" 
+        height="700" 
+        viewBox="0 0 700 700" 
+        className="border"
+        style={{ 
+          borderColor: colors.border, 
+          backgroundColor: colors.background 
+        }}
+      >
 
         <circle
           cx={centerX}
           cy={centerY}
           r={radius}
           fill="none"
-          stroke="black"
+          stroke={colors.circleStroke}
           strokeWidth="2"
         />
 
@@ -88,7 +99,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
                 y1={centerY}
                 x2={pos.x}
                 y2={pos.y}
-                stroke="black"
+                stroke={isAxis ? colors.radialLineAxis : colors.radialLine}
                 strokeWidth={isAxis ? 2 : 1}
                 opacity={isAxis ? 1 : 0.6}
               />
@@ -97,7 +108,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
                 cx={pos.x}
                 cy={pos.y}
                 r="4"
-                fill="black"
+                fill={colors.point}
               />
 
               <foreignObject
@@ -106,8 +117,8 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
                 width="70"
                 height="40"
               >
-                <div className={'flex flex-col justify-center items-center text-center text-black ' + (degreesMode ? 'text-sm' : 'text-xl')}>
-                  <div className='size-min outline-4 outline-white bg-white outline-offset-0 outline-solid'>
+                <div className={'flex flex-col justify-center items-center text-center ' + (degreesMode ? 'text-sm' : 'text-xl')} style={{ color: colors.text }}>
+                  <div className='size-min outline-4 outline-offset-0 outline-solid' style={{ backgroundColor: colors.background, outlineColor: colors.background }}>
                     <InlineMath math={degreesMode ? point.label : point.radians} />
                   </div>
                 </div>
@@ -119,7 +130,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode }) =
                 width="120"
                 height="40"
               >
-                <div className='text-lg text-center text-black'>
+                <div className='text-lg text-center' style={{ color: colors.text }}>
                   (<InlineMath math={point.x} />, <InlineMath math={point.y} />)
                 </div>
               </foreignObject>

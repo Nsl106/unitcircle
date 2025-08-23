@@ -1,33 +1,49 @@
 import './App.css'
 import UnitCircle from './components/UnitCircle'
+import DarkModeButton from './components/DarkModeButton'
+import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { useState } from 'react'
 
-function App() {
+function AppContent() {
   const [isDegreesMode, setIsDegreesMode] = useState<Boolean>(true)
+  const { colors } = useTheme()
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">Unit Circle</h1>
+    <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ backgroundColor: colors.background }}>
+      <h1 className="text-3xl font-bold mb-4" style={{ color: colors.text }}>Unit Circle</h1>
       <UnitCircle isDegreesMode={isDegreesMode} />
 
       {/* Angle Mode Toggle */}
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-sm font-medium text-gray-700">Degrees</span>
+        <span className="text-sm font-medium" style={{ color: colors.textSecondary }}>Degrees</span>
         <button
           onClick={() => setIsDegreesMode(!isDegreesMode)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-            isDegreesMode ? 'bg-gray-200' : 'bg-blue-600'
-          }`}
+          className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+          style={{
+            backgroundColor: isDegreesMode ? colors.toggleBg : colors.toggleActive,
+          }}
         >
           <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              isDegreesMode ? 'translate-x-1' : 'translate-x-6'
-            }`}
+            className="inline-block h-4 w-4 transform rounded-full transition-transform"
+            style={{
+              backgroundColor: colors.toggleKnob,
+              transform: isDegreesMode ? 'translateX(4px)' : 'translateX(24px)',
+            }}
           />
         </button>
-        <span className="text-sm font-medium text-gray-700">Radians</span>
+        <span className="text-sm font-medium" style={{ color: colors.textSecondary }}>Radians</span>
       </div>
-          </div>
+      
+      <DarkModeButton />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 
