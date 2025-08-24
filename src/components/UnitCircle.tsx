@@ -269,10 +269,10 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
         {/* Selected angle indicator */}
         {showSelector && (
           <g>
-            {/* Tan line - from point to x-axis (tangent line) - rendered first to be behind */}
+            {/* Tan line - from selected point on circle to x-axis (tangent line) */}
             <line
-              x1={selectedPos.x}
-              y1={selectedPos.y}
+              x1={selectedPos.x -centerX > 0 ? selectedPos.x : centerX}
+              y1={selectedPos.x - centerX > 0 ? selectedPos.y : centerY}
               x2={centerX + radius}
               y2={centerY - (radius * Math.tan((selectedAngle * Math.PI) / 180))}
               stroke="#ffffff"
