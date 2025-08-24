@@ -15,9 +15,11 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
 }) => {
   const { colors } = useTheme();
 
+  const truncatedAngle = Math.floor(selectedAngle * 10) / 10
+
   // Try to find the exact point in unit circle data, otherwise calculate coordinates
-  const exactPoint = findPointByAngle(Math.round(selectedAngle));
-  const selectedAngleRadians = (selectedAngle * Math.PI) / 180;
+  const exactPoint = findPointByAngle(Math.round(truncatedAngle));
+  const selectedAngleRadians = (truncatedAngle * Math.PI) / 180;
   const selectedX = exactPoint ? exactPoint.x : Math.cos(selectedAngleRadians).toFixed(3);
   const selectedY = exactPoint ? exactPoint.y : Math.sin(selectedAngleRadians).toFixed(3);
   const selectedTan = exactPoint ? exactPoint.tan : Math.tan(selectedAngleRadians).toFixed(3);
@@ -28,7 +30,7 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
     <div className="flex flex-col items-center justify-center p-6 border border-white min-w-52 min-h-52">
       <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text }}>Selected Angle</h3>
       <div className="text-2xl font-bold mb-2" style={{ color: '#ff6b6b' }}>
-        <InlineMath math={formatAngleDisplay(selectedAngle, isDegreesMode)} />
+        <InlineMath math={formatAngleDisplay(truncatedAngle, isDegreesMode)} />
       </div>
       <div className="text-sm text-gray-600 mb-2">Coordinates:</div>
       <div className="text-lg" style={{ color: '#ff6b6b' }}>

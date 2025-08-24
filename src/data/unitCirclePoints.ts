@@ -47,7 +47,7 @@ export const findPointByAngle = (angle: number): Point | undefined => {
 // Helper function to format angle display
 export const formatAngleDisplay = (angle: number, isDegreesMode: boolean): string => {
   if (isDegreesMode) {
-    return `${Math.round(angle)}°`;
+    return `${angle}°`;
   } else {
     // Try to find an exact match in the unit circle points
     const exactPoint = findPointByAngle(Math.round(angle));
