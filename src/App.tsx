@@ -2,11 +2,18 @@ import './App.css'
 import UnitCircle from './components/UnitCircle'
 import DarkModeButton from './components/DarkModeButton'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function AppContent() {
-  const [isDegreesMode, setIsDegreesMode] = useState<Boolean>(true)
+  const [isDegreesMode, setIsDegreesMode] = useState<Boolean>(() => {
+    const saved = localStorage.getItem('unitCircleMode')
+    return saved !== null ? saved === 'degrees' : true
+  })
   const { colors } = useTheme()
+
+  useEffect(() => {
+    localStorage.setItem('unitCircleMode', isDegreesMode ? 'degrees' : 'radians')
+  }, [isDegreesMode])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ backgroundColor: colors.background }}>
