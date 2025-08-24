@@ -20,6 +20,7 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
   const selectedAngleRadians = (selectedAngle * Math.PI) / 180;
   const selectedX = exactPoint ? exactPoint.x : Math.cos(selectedAngleRadians).toFixed(3);
   const selectedY = exactPoint ? exactPoint.y : Math.sin(selectedAngleRadians).toFixed(3);
+  const selectedTan = exactPoint ? exactPoint.tan : Math.tan(selectedAngleRadians).toFixed(3);
 
 
 
@@ -32,6 +33,18 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
       <div className="text-sm text-gray-600 mb-2">Coordinates:</div>
       <div className="text-lg" style={{ color: '#ff6b6b' }}>
         (<InlineMath math={selectedX} />, <InlineMath math={selectedY} />)
+      </div>
+      <div className="text-sm text-gray-600 mb-2 mt-4">Trigonometric Functions:</div>
+      <div className="text-sm space-y-1">
+        <div style={{ color: '#ff0000' }}>
+          sin = <InlineMath math={selectedY} />
+        </div>
+        <div style={{ color: '#00ff00' }}>
+          cos = <InlineMath math={selectedX} />
+        </div>
+        <div style={{ color: '#0000ff' }}>
+          tan = <InlineMath math={selectedTan} />
+        </div>
       </div>
     </div>
   );

@@ -251,6 +251,54 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
         {/* Selected angle indicator */}
         {showSelector && (
           <g>
+            {/* Tan line - from point to x-axis (tangent line) - rendered first to be behind */}
+            <line
+              x1={selectedPos.x}
+              y1={selectedPos.y}
+              x2={centerX + radius}
+              y2={centerY - (radius * Math.tan((selectedAngle * Math.PI) / 180))}
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeDasharray="5,5"
+              opacity="0.8"
+            />
+
+            {/* Sin line (vertical) - from x-axis to point */}
+            <line
+              x1={selectedPos.x}
+              y1={centerY}
+              x2={selectedPos.x}
+              y2={selectedPos.y}
+              stroke="#ff0000"
+              strokeWidth="2"
+              strokeDasharray="5,5"
+              opacity="0.8"
+            />
+
+            {/* Cos line (horizontal) - from y-axis to point */}
+            <line
+              x1={centerX}
+              y1={selectedPos.y}
+              x2={selectedPos.x}
+              y2={selectedPos.y}
+              stroke="#00ff00"
+              strokeWidth="2"
+              strokeDasharray="5,5"
+              opacity="0.8"
+            />
+
+            {/* Tan vertical line - from tangent point to x-axis */}
+            <line
+              x1={centerX + radius}
+              y1={centerY - (radius * Math.tan((selectedAngle * Math.PI) / 180))}
+              x2={centerX + radius}
+              y2={centerY}
+              stroke="#0000ff"
+              strokeWidth="2"
+              strokeDasharray="5,5"
+              opacity="0.8"
+            />
+
             {/* Line from center to selected point */}
             <line
               x1={centerX}
