@@ -1,14 +1,16 @@
 import './App.css'
 import UnitCircle from './components/UnitCircle'
+import AngleDisplayBox from './components/AngleDisplayBox'
 import DarkModeButton from './components/DarkModeButton'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
 import { useState, useEffect } from 'react'
 
 function AppContent() {
-  const [isDegreesMode, setIsDegreesMode] = useState<Boolean>(() => {
+  const [isDegreesMode, setIsDegreesMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('unitCircleMode')
     return saved !== null ? saved === 'degrees' : true
   })
+  const [selectedAngle, setSelectedAngle] = useState(0)
   const { colors } = useTheme()
 
   useEffect(() => {
@@ -17,7 +19,15 @@ function AppContent() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ backgroundColor: colors.background }}>
-      <UnitCircle isDegreesMode={isDegreesMode} />
+      <div className="relative flex items-center justify-center">
+        <UnitCircle isDegreesMode={isDegreesMode} onAngleChange={setSelectedAngle} />
+        <div className="absolute left-full ml-8">
+          <AngleDisplayBox
+            selectedAngle={selectedAngle}
+            isDegreesMode={isDegreesMode}
+          />
+        </div>
+      </div>
 
       {/* Angle Mode Toggle */}
       <div className="flex items-center gap-3 mb-4">
