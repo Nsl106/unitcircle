@@ -11,20 +11,32 @@ function AppContent() {
     return saved !== null ? saved === 'degrees' : true
   })
   const [selectedAngle, setSelectedAngle] = useState(0)
+  const [isFromDragging, setIsFromDragging] = useState(false)
   const { colors } = useTheme()
 
   useEffect(() => {
     localStorage.setItem('unitCircleMode', isDegreesMode ? 'degrees' : 'radians')
   }, [isDegreesMode])
 
+  const handleAngleChange = (angle: number, fromDragging?: boolean) => {
+    setSelectedAngle(angle)
+    setIsFromDragging(fromDragging || false)
+  }
+
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ backgroundColor: colors.background }}>
       <div className="relative flex items-center justify-center">
-        <UnitCircle isDegreesMode={isDegreesMode} onAngleChange={setSelectedAngle} />
+        <UnitCircle 
+          isDegreesMode={isDegreesMode} 
+          onAngleChange={handleAngleChange}
+          selectedAngle={selectedAngle}
+        />
         <div className="absolute left-full ml-8">
           <AngleDisplayBox
             selectedAngle={selectedAngle}
             isDegreesMode={isDegreesMode}
+            onAngleChange={handleAngleChange}
+            isFromDragging={isFromDragging}
           />
         </div>
       </div>

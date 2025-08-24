@@ -5,23 +5,37 @@ import { useTheme } from '../contexts/ThemeContext';
 import { unitCirclePoints, getSnapPoints } from '../data/unitCirclePoints';
 interface UnitCircleProps {
   isDegreesMode: boolean;
-  onAngleChange?: (angle: number, showSelector: boolean) => void;
+  onAngleChange?: (angle: number, showSelector: boolean, isFromDragging: boolean) => void;
+  selectedAngle?: number;
 }
 
-const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onAngleChange }) => {
+const UnitCircle: React.FC<UnitCircleProps> = ({ 
+  isDegreesMode: degreesMode, 
+  onAngleChange,
+  selectedAngle: externalSelectedAngle 
+}) => {
   const { colors } = useTheme();
   const radius = 250;
   const centerX = 350;
   const centerY = 350;
 
   // State for the draggable angle selector
-  const [selectedAngle, setSelectedAngle] = useState(0);
+  const [internalSelectedAngle, setInternalSelectedAngle] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [showSelector, setShowSelector] = useState(false);
   const [ctrlPressed, setCtrlPressed] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
+  // Use external angle if provided, otherwise use internal state
+  const selectedAngle = externalSelectedAngle !== undefined ? externalSelectedAngle : internalSelectedAngle;
 
+  // Update internal state when external angle changes
+  useEffect(() => {
+    if (externalSelectedAngle !== undefined) {
+      setInternalSelectedAngle(externalSelectedAngle);
+      setShowSelector(true);
+    }
+  }, [externalSelectedAngle]);
 
   // Offset constants
   const POINT_OFFSET = 0;
@@ -98,14 +112,22 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
     return closestSnap;
   };
 
-  // Notify parent component when angle changes
-  useEffect(() => {
+  // Function to update angle and notify parent
+  const updateAngle = (newAngle: number, showSelectorState: boolean = true, isFromDragging: boolean = false) => {
+    setInternalSelectedAngle(newAngle);
+    setShowSelector(showSelectorState);
     if (onAngleChange) {
-      onAngleChange(selectedAngle, showSelector);
+      onAngleChange(newAngle, showSelectorState, isFromDragging);
     }
-  }, [selectedAngle, showSelector, onAngleChange]);
+  };
 
-  // Add global mouse up listener and ESC key listener
+  // Notify parent component when angle changes (only for internal changes)
+  useEffect(() => {
+    if (onAngleChange && externalSelectedAngle === undefined) {
+      onAngleChange(selectedAngle, showSelector, false);
+    }
+  }, [selectedAngle, showSelector, onAngleChange, externalSelectedAngle]);
+
   useEffect(() => {
     const handleGlobalMouseDown = (e: MouseEvent) => {
       const distanceFromCenter = getDistanceFromCenter(e.clientX, e.clientY);
@@ -116,7 +138,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
         setShowSelector(true);
         const angle = getAngleFromMouse(e.clientX, e.clientY);
         const snappedAngle = snapToAngle(angle, ctrlPressed);
-        setSelectedAngle(snappedAngle);
+        updateAngle(snappedAngle, true, true);
       }
     };
 
@@ -124,7 +146,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
       if (isDragging) {
         const angle = getAngleFromMouse(e.clientX, e.clientY);
         const snappedAngle = snapToAngle(angle, ctrlPressed);
-        setSelectedAngle(snappedAngle);
+        updateAngle(snappedAngle, true, true);
       }
 
       // Update cursor based on distance from center
@@ -142,10 +164,6 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setShowSelector(false);
-        setIsDragging(false);
-      }
       if (e.key === 'Control') {
         setCtrlPressed(true);
       }
@@ -170,7 +188,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     };
-      }, [isDragging, ctrlPressed]);
+  }, [isDragging, ctrlPressed]);
 
   const selectedPos = getCirclePosition(selectedAngle, 0);
 
@@ -229,7 +247,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({ isDegreesMode: degreesMode, onA
               >
                 <div className={'flex flex-col justify-center items-center text-center ' + (degreesMode ? 'text-sm' : 'text-xl')} style={{ color: colors.text }}>
                   <div className='size-min outline-4 outline-offset-0 outline-solid' style={{ backgroundColor: colors.background, outlineColor: colors.background, userSelect: 'none' }}>
-                    <InlineMath math={degreesMode ? point.label : point.radians} />
+                    <InlineMath math={degreesMode ? point.degreesLabel : point.radiansLabel} />
                   </div>
                 </div>
               </foreignObject>
