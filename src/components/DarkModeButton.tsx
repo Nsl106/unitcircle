@@ -8,9 +8,9 @@ const DarkModeButton: React.FC = () => {
 
   return (
     <Button
-      onClick={() => theme == "light" ? setTheme("dark") : setTheme("light")}
-      variant={"ghost"}
-      size={"icon"}
+      onClick={() => (theme == 'light' ? setTheme('dark') : setTheme('light'))}
+      variant={'ghost'}
+      size={'icon'}
       className="fixed bottom-4 right-4 rounded-full cursor-pointer"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

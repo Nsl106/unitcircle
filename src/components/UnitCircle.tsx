@@ -11,7 +11,7 @@ interface UnitCircleProps {
 const UnitCircle: React.FC<UnitCircleProps> = ({
   isDegreesMode: degreesMode,
   onAngleChange,
-  selectedAngle: externalSelectedAngle
+  selectedAngle: externalSelectedAngle,
 }) => {
   const radius = 250;
   const centerX = 350;
@@ -25,7 +25,8 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Use external angle if provided, otherwise use internal state
-  const selectedAngle = externalSelectedAngle !== undefined ? externalSelectedAngle : internalSelectedAngle;
+  const selectedAngle =
+    externalSelectedAngle !== undefined ? externalSelectedAngle : internalSelectedAngle;
 
   // Update internal state when external angle changes
   useEffect(() => {
@@ -60,7 +61,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
     const deltaX = x - centerX;
     const deltaY = centerY - y; // Invert Y axis
 
-    let angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+    let angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
 
     // Convert to 0-360 range
     if (angle < 0) {
@@ -78,9 +79,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
-    return Math.sqrt(
-      Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
-    );
+    return Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
   };
 
   // Function to snap angle to specific values
@@ -118,7 +117,11 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
 
   useEffect(() => {
     // Function to update angle and notify parent
-    const updateAngle = (newAngle: number, showSelectorState: boolean = true, isFromDragging: boolean = false) => {
+    const updateAngle = (
+      newAngle: number,
+      showSelectorState: boolean = true,
+      isFromDragging: boolean = false
+    ) => {
       setInternalSelectedAngle(newAngle);
       setShowSelector(showSelectorState);
       if (onAngleChange) {
@@ -198,7 +201,6 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
         viewBox="0 0 700 700"
         className="border border-neutral-950 dark:border-neutral-100"
       >
-
         <circle
           cx={centerX}
           cy={centerY}
@@ -215,7 +217,8 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
           const labelPos = getCirclePosition(point.angle, LABEL_OFFSET);
           const innerLabelPos = getCirclePosition(point.angle, INNER_LABEL_OFFSET);
 
-          const isAxis = point.angle == 0 || point.angle == 90 || point.angle == 180 || point.angle == 270
+          const isAxis =
+            point.angle == 0 || point.angle == 90 || point.angle == 180 || point.angle == 270;
 
           return (
             <g key={index}>
@@ -225,7 +228,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
                 x2={pos.x}
                 y2={pos.y}
                 stroke="currentColor"
-                className={isAxis ? "text-neutral-950 dark:text-neutral-100" : "text-neutral-500"}
+                className={isAxis ? 'text-neutral-950 dark:text-neutral-100' : 'text-neutral-500'}
                 strokeWidth={isAxis ? 2 : 1}
                 opacity={isAxis ? 1 : 0.6}
               />
@@ -244,20 +247,27 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
                 width="70"
                 height="40"
               >
-                <div className={'flex flex-col justify-center items-center text-center ' + (degreesMode ? 'text-sm' : 'text-xl') + ' text-gray-900 dark:text-neutral-100'}>
-                  <div className='size-min outline-4 outline-offset-0 outline-solid bg-neutral-100 dark:bg-neutral-950 outline-neutral-100 dark:outline-neutral-950 transition-colors duration-300' style={{ userSelect: 'none' }}>
+                <div
+                  className={
+                    'flex flex-col justify-center items-center text-center ' +
+                    (degreesMode ? 'text-sm' : 'text-xl') +
+                    ' text-gray-900 dark:text-neutral-100'
+                  }
+                >
+                  <div
+                    className="size-min outline-4 outline-offset-0 outline-solid bg-neutral-100 dark:bg-neutral-950 outline-neutral-100 dark:outline-neutral-950 transition-colors duration-300"
+                    style={{ userSelect: 'none' }}
+                  >
                     <InlineMath math={degreesMode ? point.degreesLabel : point.radiansLabel} />
                   </div>
                 </div>
               </foreignObject>
 
-              <foreignObject
-                x={labelPos.x - 60}
-                y={labelPos.y - 15}
-                width="120"
-                height="40"
-              >
-                <div className='text-lg text-center text-neutral-950 dark:text-neutral-100' style={{ userSelect: 'none' }}>
+              <foreignObject x={labelPos.x - 60} y={labelPos.y - 15} width="120" height="40">
+                <div
+                  className="text-lg text-center text-neutral-950 dark:text-neutral-100"
+                  style={{ userSelect: 'none' }}
+                >
                   (<InlineMath math={point.x} />, <InlineMath math={point.y} />)
                 </div>
               </foreignObject>
@@ -273,9 +283,9 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
               x1={selectedPos.x - centerX > 0 ? selectedPos.x : centerX}
               y1={selectedPos.x - centerX > 0 ? selectedPos.y : centerY}
               x2={centerX + radius}
-              y2={centerY - (radius * Math.tan((selectedAngle * Math.PI) / 180))}
-              className={"text-neutral-950 dark:text-neutral-100"}
-              stroke={"currentColor"}
+              y2={centerY - radius * Math.tan((selectedAngle * Math.PI) / 180)}
+              className={'text-neutral-950 dark:text-neutral-100'}
+              stroke={'currentColor'}
               strokeWidth="2"
               strokeDasharray="5,5"
             />
@@ -286,7 +296,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
               y1={centerY}
               x2={selectedPos.x}
               y2={selectedPos.y}
-              className={"text-red-600 dark:text-red-500"}
+              className={'text-red-600 dark:text-red-500'}
               stroke="currentColor"
               strokeWidth="2"
               strokeDasharray="5,5"
@@ -298,7 +308,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
               y1={selectedPos.y}
               x2={selectedPos.x}
               y2={selectedPos.y}
-              className={"text-green-600 dark:text-green-500"}
+              className={'text-green-600 dark:text-green-500'}
               stroke="currentColor"
               strokeWidth="2"
               strokeDasharray="5,5"
@@ -307,10 +317,10 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
             {/* Tan vertical line - from tangent point to x-axis */}
             <line
               x1={centerX + radius}
-              y1={centerY - (radius * Math.tan((selectedAngle * Math.PI) / 180))}
+              y1={centerY - radius * Math.tan((selectedAngle * Math.PI) / 180)}
               x2={centerX + radius}
               y2={centerY}
-              className={"text-blue-600 dark:text-blue-500"}
+              className={'text-blue-600 dark:text-blue-500'}
               stroke="currentColor"
               strokeWidth="2"
               strokeDasharray="5,5"
@@ -322,7 +332,7 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
               y1={centerY}
               x2={selectedPos.x}
               y2={selectedPos.y}
-              className={"text-neutral-950 dark:text-neutral-100"}
+              className={'text-neutral-950 dark:text-neutral-100'}
               stroke="currentColor"
               strokeWidth="3"
             />
@@ -344,4 +354,4 @@ const UnitCircle: React.FC<UnitCircleProps> = ({
   );
 };
 
-export default UnitCircle; 
+export default UnitCircle;
