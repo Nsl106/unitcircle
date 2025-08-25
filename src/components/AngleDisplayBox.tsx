@@ -3,6 +3,7 @@ import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 import { formatAngleDisplay, findPointByAngle } from '../data/unitCirclePoints';
 import * as math from 'mathjs';
+import { Input } from './ui/input';
 
 interface AngleDisplayBoxProps {
     selectedAngle: number;
@@ -116,7 +117,7 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
 
             {isEditing ? (
                 <div className="flex flex-col items-center">
-                    <input
+                    <Input
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}

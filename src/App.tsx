@@ -1,7 +1,7 @@
 import UnitCircle from './components/UnitCircle'
 import AngleDisplayBox from './components/AngleDisplayBox'
 import DarkModeButton from './components/DarkModeButton'
-import { ThemeProvider } from './contexts/ThemeContext'
+import { ThemeProvider } from './contexts/ThemeProvider'
 import { useState, useEffect } from 'react'
 import { Switch } from './components/ui/switch'
 
@@ -55,7 +55,7 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="system">
       <AppContent />
     </ThemeProvider>
   )
