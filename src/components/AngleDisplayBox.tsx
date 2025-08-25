@@ -112,8 +112,8 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 border border-neutral-950 dark:border-neutral-100 min-w-52 min-h-80">
-      <h3 className="text-lg font-semibold mb-1 text-neutral-950 dark:text-neutral-100">
+    <div className="flex flex-col items-center justify-center p-2 md:p-6 border border-neutral-950 dark:border-neutral-100 min-w-32">
+      <h3 className="text-md md:text-lg font-semibold mb-1 text-neutral-950 dark:text-neutral-100 text-center">
         Current Angle
       </h3>
 
@@ -140,8 +140,10 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
         </div>
       )}
 
-      <div className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">Coordinates:</div>
-      <div className="text-lg text-neutral-500 dark:text-neutral-400">
+      <div className="text-center text-xs md:text-sm text-neutral-500 dark:text-neutral-400 mb-2">
+        Coordinates:
+      </div>
+      <div className="text-md md:text-lg text-neutral-500 dark:text-neutral-400 truncate">
         (
         <span className="text-neutral-950 dark:text-neutral-100">
           <InlineMath math={selectedX} />
@@ -152,10 +154,10 @@ const AngleDisplayBox: React.FC<AngleDisplayBoxProps> = ({
         </span>
         )
       </div>
-      <div className="text-sm text-neutral-500 dark:text-neutral-400 mb-2 mt-4">
+      <div className="text-center text-xs md:text-sm text-neutral-500 dark:text-neutral-400 my-2">
         Trigonometric Functions:
       </div>
-      <div className="text-sm space-y-1">
+      <div className="flex flex-col gap-1 text-xs md:text-sm text-center">
         <div className="text-red-600 dark:text-red-500">
           sin ={' '}
           <span className={'text-neutral-950 dark:text-neutral-100'}>

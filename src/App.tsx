@@ -4,6 +4,7 @@ import DarkModeButton from './components/DarkModeButton';
 import { ThemeProvider } from './contexts/ThemeProvider';
 import { useState, useEffect } from 'react';
 import { Switch } from './components/ui/switch';
+import { cn } from '@/lib/utils.ts';
 
 function AppContent() {
   const [isDegreesMode, setIsDegreesMode] = useState<boolean>(() => {
@@ -23,29 +24,40 @@ function AppContent() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 min-h-screen bg-neutral-100 dark:bg-neutral-950 transition-colors duration-300">
-      <div className="relative flex items-center justify-center">
+    <div
+      className={cn(
+        'flex flex-wrap flex-row items-center justify-center',
+        'min-h-screen min-w-screen',
+        'md:gap-5',
+        'bg-neutral-100 dark:bg-neutral-950 transition-colors duration-300'
+      )}
+    >
+      <div className="flex flex-col items-center justify-center">
         <UnitCircle
+          className={'w-screen max-h-screen max-w-96 aspect-square md:w-128 md:max-w-128 mb-2'}
           isDegreesMode={isDegreesMode}
           onAngleChange={handleAngleChange}
           selectedAngle={selectedAngle}
         />
-        <div className="absolute left-full ml-6">
-          <AngleDisplayBox
-            selectedAngle={selectedAngle}
-            isDegreesMode={isDegreesMode}
-            onAngleChange={handleAngleChange}
-            isFromDragging={isFromDragging}
-          />
+
+        <div className="flex items-center gap-3 m-2">
+          <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+            Degrees
+          </span>
+          <Switch checked={!isDegreesMode} onClick={() => setIsDegreesMode(!isDegreesMode)} />
+          <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+            Radians
+          </span>
         </div>
       </div>
 
-      {/* Angle Mode Toggle */}
-
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Degrees</span>
-        <Switch onClick={() => setIsDegreesMode(!isDegreesMode)} />
-        <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Radians</span>
+      <div className="m-2">
+        <AngleDisplayBox
+          selectedAngle={selectedAngle}
+          isDegreesMode={isDegreesMode}
+          onAngleChange={handleAngleChange}
+          isFromDragging={isFromDragging}
+        />
       </div>
 
       <DarkModeButton />
