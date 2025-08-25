@@ -2,18 +2,12 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const DarkModeButton: React.FC = () => {
-  const { theme, toggleTheme, colors } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-4 right-4 p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
-      style={{
-        backgroundColor: colors.background,
-        color: colors.text,
-        border: `1px solid ${colors.border}`,
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      }}
+      className="fixed bottom-4 right-4 p-3 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 bg-neutral-100 dark:bg-neutral-950 hover:bg-neutral-200 hover:dark:bg-neutral-800 text-neutral-950 dark:text-neutral-100 border border-neutral-950 dark:border-neutral-100 cursor-pointer"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
       {theme === 'light' ? (
