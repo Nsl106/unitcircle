@@ -1,6 +1,6 @@
 import UnitCircle from './components/UnitCircle';
 import AngleDisplayBox from './components/AngleDisplayBox';
-import DarkModeButton from './components/DarkModeButton';
+import CornerButtons from './components/CornerButtons.tsx';
 import { ThemeProvider } from './contexts/ThemeProvider';
 import { useState, useEffect } from 'react';
 import { Switch } from './components/ui/switch';
@@ -60,7 +60,7 @@ function AppContent() {
         />
       </div>
 
-      <DarkModeButton />
+      <CornerButtons />
     </div>
   );
 }
